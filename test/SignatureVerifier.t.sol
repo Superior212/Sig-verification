@@ -2,8 +2,8 @@
 pragma solidity ^0.8.13;
 
 import {Test, console} from "forge-std/Test.sol";
-import "../src/SignatureVerifier";
-import "../src/libary/ERC20.sol"
+import "../src/SignatureVerifier.sol";
+import "../src/libary/ERC20.sol";
 
 contract SignatureVerifier is Test {
     SignatureVerification public verifier;
