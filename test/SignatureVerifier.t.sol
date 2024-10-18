@@ -3,22 +3,23 @@ pragma solidity ^0.8.19;
 
 import "forge-std/Test.sol";
 import "../src/SignatureVerifier.sol";
-import "../src/libary/ERC20.sol";
 
-contract MockERC20 is ERC20 {
-    constructor() ERC20("MockToken", "MTK") {
+
+
+contract WhiteListERC20 is ERC20 {
+    constructor() ERC20("WEBCXII", "WCXII" ) {
         _mint(msg.sender, 1000000 * 10**18);
     }
 }
 
 contract SignatureVerifierTest is Test {
     SignatureVerifier public verifier;
-    MockERC20 public token;
+    WhiteListERC20 public token;
     address public whitelistedUser;
     uint256 public whitelistedUserPrivateKey;
 
     function setUp() public {
-        token = new MockERC20();
+        token = new WhiteListERC20();
         whitelistedUserPrivateKey = 0xA11CE;
         whitelistedUser = vm.addr(whitelistedUserPrivateKey);
 
