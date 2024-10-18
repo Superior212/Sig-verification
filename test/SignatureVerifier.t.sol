@@ -10,6 +10,7 @@ contract SignatureVerifier is Test {
     MockERC20 public token;
     address public whitelistedUser;
     uint256 public whitelistedUserPrivateKey;
+
     function setUp() public {
         token = new MockERC20();
         whitelistedUserPrivateKey = 0xA11CE;
@@ -19,10 +20,10 @@ contract SignatureVerifier is Test {
         whitelist[0] = whitelistedUser;
 
         verifier = new SignatureVerification(address(token), whitelist);
-        token.transfer(address(verifier), 1000 * 10**18);
+        token.transfer(address(verifier), 1000 * 10 ** 18);
     }
 
-   function testVerifyAndClaim() public {
+    function testVerifyAndClaim() public {
         bytes32 messageHash = keccak256("Claim tokens");
         (uint8 v, bytes32 r, bytes32 s) = vm.sign(whitelistedUserPrivateKey, messageHash);
         bytes memory signature = abi.encodePacked(r, s, v);
@@ -30,10 +31,10 @@ contract SignatureVerifier is Test {
         vm.prank(whitelistedUser);
         verifier.verifyAndClaim(messageHash, signature);
 
-        assertEq(token.balanceOf(whitelistedUser), 100 * 10**18);
+        assertEq(token.balanceOf(whitelistedUser), 100 * 10 ** 18);
     }
 
-   function testFailNonWhitelisted() public {
+    function testFailNonWhitelisted() public {
         address nonWhitelisted = address(0x1234);
         bytes32 messageHash = keccak256("Claim tokens");
         (uint8 v, bytes32 r, bytes32 s) = vm.sign(0xB0B, messageHash);
@@ -43,7 +44,7 @@ contract SignatureVerifier is Test {
         verifier.verifyAndClaim(messageHash, signature);
     }
 
-     function testFailDoubleClaim() public {
+    function testFailDoubleClaim() public {
         bytes32 messageHash = keccak256("Claim tokens");
         (uint8 v, bytes32 r, bytes32 s) = vm.sign(whitelistedUserPrivateKey, messageHash);
         bytes memory signature = abi.encodePacked(r, s, v);
