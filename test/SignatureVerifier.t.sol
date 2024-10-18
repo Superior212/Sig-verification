@@ -1,12 +1,18 @@
-// SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.13;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.19;
 
-import {Test, console} from "forge-std/Test.sol";
+import "forge-std/Test.sol";
 import "../src/SignatureVerifier.sol";
 import "../src/libary/ERC20.sol";
 
-contract SignatureVerifier is Test {
-    SignatureVerification public verifier;
+contract MockERC20 is ERC20 {
+    constructor() ERC20("MockToken", "MTK") {
+        _mint(msg.sender, 1000000 * 10**18);
+    }
+}
+
+contract SignatureVerifierTest is Test {
+    SignatureVerifier public verifier;
     MockERC20 public token;
     address public whitelistedUser;
     uint256 public whitelistedUserPrivateKey;
@@ -19,8 +25,8 @@ contract SignatureVerifier is Test {
         address[] memory whitelist = new address[](1);
         whitelist[0] = whitelistedUser;
 
-        verifier = new SignatureVerification(address(token), whitelist);
-        token.transfer(address(verifier), 1000 * 10 ** 18);
+        verifier = new SignatureVerifier(address(token), whitelist);
+        token.transfer(address(verifier), 1000 * 10**18);
     }
 
     function testVerifyAndClaim() public {
@@ -31,7 +37,7 @@ contract SignatureVerifier is Test {
         vm.prank(whitelistedUser);
         verifier.verifyAndClaim(messageHash, signature);
 
-        assertEq(token.balanceOf(whitelistedUser), 100 * 10 ** 18);
+        assertEq(token.balanceOf(whitelistedUser), 100 * 10**18);
     }
 
     function testFailNonWhitelisted() public {

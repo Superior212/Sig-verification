@@ -12,3 +12,11 @@ docs/
 
 # Dotenv file
 .env
+
+node_modules/
+
+# Ignore npm lockfile
+package-lock.json
+
+# Ignore npm debug logs
+npm-debug.log*
