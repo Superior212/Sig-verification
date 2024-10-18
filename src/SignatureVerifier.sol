@@ -13,7 +13,7 @@ contract SignatureVerifier {
 
     constructor(address _token, address[] memory _whitelist) {
         token = ERC20(_token);
-        for (uint i = 0; i < _whitelist.length; i++) {
+        for (uint256 i = 0; i < _whitelist.length; i++) {
             whitelist[_whitelist[i]] = true;
         }
     }
@@ -25,6 +25,6 @@ contract SignatureVerifier {
         require(!hasClaimed[signer], "Tokens already claimed");
 
         hasClaimed[signer] = true;
-        require(token.transfer(signer, 100 * 10**18), "Token transfer failed");
+        require(token.transfer(signer, 100 * 10 ** 18), "Token transfer failed");
     }
 }

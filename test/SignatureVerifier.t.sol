@@ -4,11 +4,9 @@ pragma solidity ^0.8.19;
 import "forge-std/Test.sol";
 import "../src/SignatureVerifier.sol";
 
-
-
 contract WhiteListERC20 is ERC20 {
-    constructor() ERC20("WEBCXII", "WCXII" ) {
-        _mint(msg.sender, 1000000 * 10**18);
+    constructor() ERC20("WEBCXII", "WCXII") {
+        _mint(msg.sender, 1000000 * 10 ** 18);
     }
 }
 
@@ -27,7 +25,7 @@ contract SignatureVerifierTest is Test {
         whitelist[0] = whitelistedUser;
 
         verifier = new SignatureVerifier(address(token), whitelist);
-        token.transfer(address(verifier), 1000 * 10**18);
+        token.transfer(address(verifier), 1000 * 10 ** 18);
     }
 
     function testVerifyAndClaim() public {
@@ -38,7 +36,7 @@ contract SignatureVerifierTest is Test {
         vm.prank(whitelistedUser);
         verifier.verifyAndClaim(messageHash, signature);
 
-        assertEq(token.balanceOf(whitelistedUser), 100 * 10**18);
+        assertEq(token.balanceOf(whitelistedUser), 100 * 10 ** 18);
     }
 
     function testFailNonWhitelisted() public {
